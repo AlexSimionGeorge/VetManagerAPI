@@ -1,0 +1,73 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+
+# Django stuff
+*.log
+local_settings.py
+/db.sqlite3
+/db.sqlite3-journal
+/media
+/staticfiles
+
+# PyCharm project files
+.idea/
+*.iml
+
+# Virtual environment
+venv/
+ENV/
+.env
+.venv
+
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# Celery
+celerybeat-schedule
+
+# VS Code settings
+.vscode/
+
+# MyPy
+.mypy_cache/
+
+# pytest
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ntuser.dat
+Desktop.ini
