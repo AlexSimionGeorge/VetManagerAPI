@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-party apps
+    'rest_framework',  # Required for Django REST framework
+
+    # Apps
+    'apps.owner.apps.OwnerConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,17 +78,20 @@ WSGI_APPLICATION = 'VetManagerAPI.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vetmanager_db',
-        'USER': 'vetmanager_user',
-        'PASSWORD': 'vetmanager_password',
-        'HOST': 'db',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'vetmanager_db'),
+        'USER': os.getenv('DB_USER', 'vetmanager_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'vetmanager_password'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),  # Default to localhost when running outside Docker
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
+
 
 
 

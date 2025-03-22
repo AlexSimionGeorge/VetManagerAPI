@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   web:
@@ -9,7 +9,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Ensure DB is ready before Django starts
     environment:
       - DEBUG=True
       - DB_NAME=vetmanager_db
@@ -17,6 +18,8 @@ services:
       - DB_PASSWORD=vetmanager_password
       - DB_HOST=db
       - DB_PORT=5432
+    networks:
+      - vetmanager_network
 
   db:
     image: postgres:13
@@ -28,6 +31,15 @@ services:
       POSTGRES_PASSWORD: vetmanager_password
     ports:
       - "5432:5432"
+    networks:
+      - vetmanager_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vetmanager_user -d vetmanager_db"]
+      interval: 10s
+      retries: 5
 
 volumes:
   postgres_data:
+
+networks:
+  vetmanager_network:
