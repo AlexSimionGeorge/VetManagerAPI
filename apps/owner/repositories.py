@@ -1,18 +1,6 @@
 from .models import Owner
+from ..base_classes.base_repository import BaseRepository
 
-class OwnerRepository:
-    @staticmethod
-    def get_all_owners():
-        return Owner.objects.all()
 
-    @staticmethod
-    def get_owner_by_id(owner_id):
-        return Owner.objects.filter(id=owner_id).first()
-
-    @staticmethod
-    def create_owner(data):
-        return Owner.objects.create(**data)
-
-    @staticmethod
-    def delete_owner(owner_id):
-        return Owner.objects.filter(id=owner_id).delete()
+class OwnerRepository(BaseRepository):
+    model = Owner
