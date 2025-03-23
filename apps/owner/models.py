@@ -11,6 +11,7 @@ class Owner(models.Model):
     phone_number = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     number_of_animals = models.IntegerField()
+    password = models.CharField(max_length=255)
 
     class Meta:
         db_table = "owner"

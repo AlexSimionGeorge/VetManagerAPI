@@ -6,6 +6,7 @@ class Veterinarian(models.Model):
     phone_number = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     cabinet_address = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
 
     class Meta:
         db_table = "veterinarian"
