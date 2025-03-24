@@ -1,4 +1,5 @@
 from django.db import models
+from apps.owner.models import Owner
 
 class Animal(models.Model):
     name = models.CharField(max_length=255)
@@ -12,6 +13,8 @@ class Animal(models.Model):
     birth_date = models.DateField()
     has_microchip = models.BooleanField()
     microchip_id = models.CharField(max_length=255)
+
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='animals')
 
     class Meta:
         db_table = "animal"
