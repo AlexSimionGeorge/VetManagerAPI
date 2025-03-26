@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     # Apps
     'apps.owner.apps.OwnerConfig',
     'apps.veterinarian.apps.VeterinarianConfig',
-    'apps.animal.apps.AnimalConfig'
+    'apps.animal.apps.AnimalConfig',
+    'apps.vet_subscription.apps.VetSubscriptionConfig'
 ]
 
 MIDDLEWARE = [

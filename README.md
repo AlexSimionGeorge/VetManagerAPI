@@ -12,3 +12,7 @@ docker volume ls
 
 python manage.py makemigrations
 python manage.py migrate
+
+
+python manage.py startapp VetSubscription
+mv vet_subscription apps/
