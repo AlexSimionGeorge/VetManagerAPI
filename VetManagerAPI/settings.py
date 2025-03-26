@@ -86,11 +86,11 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'vetmanager_db'),
-        'USER': os.getenv('DB_USER', 'vetmanager_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'vetmanager_password'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),  # Default to localhost when running outside Docker
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 

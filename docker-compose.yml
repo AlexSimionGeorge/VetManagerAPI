@@ -10,31 +10,31 @@ services:
       - "8000:8000"
     depends_on:
       db:
-        condition: service_healthy  # Ensure DB is ready before Django starts
+        condition: service_healthy
     environment:
-      - DEBUG=True
-      - DB_NAME=vetmanager_db
-      - DB_USER=vetmanager_user
-      - DB_PASSWORD=vetmanager_password
-      - DB_HOST=db
-      - DB_PORT=5432
+      - DEBUG=${DEBUG}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
     networks:
       - vetmanager_network
 
   db:
-    image: postgres:13
+    image: ${DB_IMAGE}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ${DB_VOLUME_PATH}
     environment:
-      POSTGRES_DB: vetmanager_db
-      POSTGRES_USER: vetmanager_user
-      POSTGRES_PASSWORD: vetmanager_password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     networks:
       - vetmanager_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U vetmanager_user -d vetmanager_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       retries: 5
 
