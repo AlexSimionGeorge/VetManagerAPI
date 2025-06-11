@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: VetManagerAPI
     build: ./VetManagerAPI
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -17,9 +18,11 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
     networks:
-      - vetmanager_network
+      - vet_manager_backend_network
+      - vet_manager_frontend_network
 
   db:
+    container_name: VetManagerDB
     image: ${DB_IMAGE}
     volumes:
       - ${DB_VOLUME_PATH}
@@ -30,14 +33,33 @@ services:
     ports:
       - "${DB_PORT}:${DB_PORT}"
     networks:
-      - vetmanager_network
+      - vet_manager_backend_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       retries: 5
 
+  angular:
+    container_name: VetManagerClientDev
+    build:
+      context: ./VetManagerClient
+    volumes:
+      - ./VetManagerClient:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    working_dir: /app
+    networks:
+      - vet_manager_frontend_network
+
 volumes:
   postgres_data:
 
 networks:
-  vetmanager_network:
+  vet_manager_backend_network:
+  vet_manager_frontend_network:
+
+
+
+
+
