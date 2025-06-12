@@ -1,7 +1,9 @@
 from rest_framework import viewsets
-from .models import Veterinarian
+from django.contrib.auth import get_user_model
 from .serializers import VeterinarianSerializer
 
+User = get_user_model()
+
 class VeterinarianViewSet(viewsets.ModelViewSet):
-    queryset = Veterinarian.objects.all()
+    queryset = User.objects.all()
     serializer_class = VeterinarianSerializer

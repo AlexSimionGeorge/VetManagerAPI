@@ -6,9 +6,10 @@ strcuture:
 
 sudo systemctl start docker
 
+docker compose --env-file ./VetManagerAPI/.env down -v
 docker compose  --env-file ./VetManagerAPI/.env  build --no-cache
 docker compose  --env-file ./VetManagerAPI/.env  up -d
-docker compose --env-file ./VetManagerAPI/.env down
+
 
 docker compose --env-file ./VetManagerAPI/.env start
 docker compose --env-file ./VetManagerAPI/.env stop

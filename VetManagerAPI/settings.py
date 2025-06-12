@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'apps.vet_subscription.apps.VetSubscriptionConfig'
 ]
 
+AUTH_USER_MODEL = 'veterinarian.Veterinarian'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
