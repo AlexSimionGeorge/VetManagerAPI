@@ -1,18 +1,18 @@
 strcuture:
-├── docker-compose.yml -> ./VetManagerAPI/docker-compose.yml
 ├── VetManagerAPI/
 └── VetManagerClient/
 
 
 sudo systemctl start docker
 
-docker compose --env-file ./VetManagerAPI/.env down -v
-docker compose  --env-file ./VetManagerAPI/.env  build --no-cache
-docker compose  --env-file ./VetManagerAPI/.env  up -d
+docker compose down 
+docker compose build --no-cache
+docker compose up -d
 
+docker compose start
+docker compose stop
+docker compose restart  
 
-docker compose --env-file ./VetManagerAPI/.env start
-docker compose --env-file ./VetManagerAPI/.env stop
 
 docker volume ls
 docker ps

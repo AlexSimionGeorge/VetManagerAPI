@@ -1,22 +1,17 @@
 services:
   api:
     container_name: VetManagerAPI
-    build: ./VetManagerAPI
+    build: ./
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./VetManagerAPI:/app
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DEBUG=${DEBUG}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+    env_file:
+      - ./.env
     networks:
       - vet_manager_backend_network
       - vet_manager_frontend_network
@@ -42,9 +37,10 @@ services:
   angular:
     container_name: VetManagerClientDev
     build:
-      context: ./VetManagerClient
+      context: ../VetManagerClient/
+      dockerfile: Dockerfile
     volumes:
-      - ./VetManagerClient:/app
+      - ../VetManagerClient/:/app
       - /app/node_modules
     ports:
       - "4200:4200"

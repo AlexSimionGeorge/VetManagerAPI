@@ -1,3 +1,5 @@
+import os
+from datetime import timedelta
 """
 Django settings for VetManagerAPI project.
 
@@ -24,6 +26,19 @@ SECRET_KEY = 'django-insecure-($ssqe-*0kefk$4j5=g0_y@%#rq1rvqey+w((*+9*lrlm0n*)+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+print(".env value is:", os.getenv("JWT_ACCESS_LIFETIME"),  "\n\n\n")
+# JWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv("JWT_ACCESS_LIFETIME"))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv("JWT_REFRESH_LIFETIME"))),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': os.getenv("JWT_ALGORITHM", "HS256"),
+    'SIGNING_KEY': os.getenv("JWT_SECRET_KEY"),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 
 ALLOWED_HOSTS = []
 
@@ -83,7 +98,7 @@ WSGI_APPLICATION = 'VetManagerAPI.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-import os
+
 
 DATABASES = {
     'default': {
@@ -140,3 +155,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django REST framework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
