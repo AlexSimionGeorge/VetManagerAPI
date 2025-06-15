@@ -1,5 +1,10 @@
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
+from pathlib import Path
+
+load_dotenv()
+
 """
 Django settings for VetManagerAPI project.
 
@@ -12,7 +17,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +32,6 @@ SECRET_KEY = 'django-insecure-($ssqe-*0kefk$4j5=g0_y@%#rq1rvqey+w((*+9*lrlm0n*)+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-print(".env value is:", os.getenv("JWT_ACCESS_LIFETIME"),  "\n\n\n")
 # JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv("JWT_ACCESS_LIFETIME"))),
@@ -60,10 +64,12 @@ INSTALLED_APPS = [
     'apps.owner.apps.OwnerConfig',
     'apps.veterinarian.apps.VeterinarianConfig',
     'apps.animal.apps.AnimalConfig',
-    'apps.vet_subscription.apps.VetSubscriptionConfig'
+    'apps.vet_subscription.apps.VetSubscriptionConfig',
+    'apps.accounts.apps.AccountsConfig',
 ]
 
-AUTH_USER_MODEL = 'veterinarian.Veterinarian'
+AUTH_USER_MODEL = 'accounts.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

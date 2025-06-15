@@ -1,12 +1,10 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from apps.accounts.models import User
 
-class Veterinarian(AbstractUser):
-    phone_number = models.CharField(max_length=20)
-    cabinet_address = models.CharField(max_length=255)
-
+class Veterinarian(models.Model):
     class Meta:
         db_table = "veterinarian"
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20)
+    cabinet_address = models.CharField(max_length=255)

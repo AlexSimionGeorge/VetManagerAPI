@@ -1,9 +1,9 @@
 from rest_framework import viewsets
-from django.contrib.auth import get_user_model
-from .serializers import VeterinarianSerializer
-
-User = get_user_model()
+from rest_framework.permissions import IsAuthenticated
+from apps.veterinarian.models import Veterinarian
+from apps.veterinarian.serializers import VeterinarianSerializer
 
 class VeterinarianViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = Veterinarian.objects.select_related("user").all()
     serializer_class = VeterinarianSerializer
+    permission_classes = [IsAuthenticated]
