@@ -6,7 +6,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=150, blank=True, null=True)
+    username = models.CharField(max_length=150, unique=True)
     role = models.CharField(max_length=20, choices=[('veterinarian', 'Veterinarian'), ('owner', 'Owner')])
 
     def __str__(self):
