@@ -1,5 +1,6 @@
 # Django REST Framework
 from rest_framework import generics, status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -19,6 +20,7 @@ from .serializers import LoginSerializer
 
 
 class VeterinarianRegisterView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
     serializer_class = VeterinarianSerializer
 
     def create(self, request, *args, **kwargs):
@@ -27,7 +29,18 @@ class VeterinarianRegisterView(generics.CreateAPIView):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class OwnerRegisterView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = OwnerSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 class LoginView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
@@ -36,6 +49,7 @@ class LoginView(generics.GenericAPIView):
         return Response(serializer.validated_data)
 
 class GoogleLoginView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         token = request.data.get("google_token")
         if not token:
@@ -44,27 +58,20 @@ class GoogleLoginView(APIView):
         try:
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
 
-            # ID token is valid. Get user info
+            # Extract info
             email = idinfo.get("email")
-            first_name = idinfo.get("given_name", "")
-            last_name = idinfo.get("family_name", "")
-            picture = idinfo.get("picture", "")
-            username = email.split("@")[0]
-
             if not email:
                 return Response({"detail": "Email not provided by Google."}, status=status.HTTP_400_BAD_REQUEST)
 
-            user, created = User.objects.get_or_create(email=email, defaults={
-                "first_name": first_name,
-                "last_name": last_name,
-                "username": username,
-                "role": "owner",  # or ask frontend to include role
-            })
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response(
+                    {"detail": "Account does not exist."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
 
-            if created:
-                user.set_unusable_password()
-                user.save()
-
+            # User exists: issue token
             refresh = RefreshToken.for_user(user)
 
             return Response({
@@ -79,14 +86,9 @@ class GoogleLoginView(APIView):
             })
 
         except ValueError as e:
-            return Response({"detail": "Invalid token", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Invalid token", "error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
-class OwnerRegisterView(generics.CreateAPIView):
-    serializer_class = OwnerSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
